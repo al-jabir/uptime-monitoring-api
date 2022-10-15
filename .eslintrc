@@ -1,5 +1,5 @@
 {
-  "extends": ["prettier", "airbnb-base"],
+  "extends": ["some-other-config-you-use", "prettier", "airbnb-base"],
   "parserOptions": {
     "ecmaVersion": 12
   },
