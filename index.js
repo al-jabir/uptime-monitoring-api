@@ -9,12 +9,13 @@ app.config = {
 };
 
 app.createServer = () => {
-    const server = http.createServer();
+    const server = http.createServer(app.handleReqRes);
     server.listen(app.config.port, () => {
-        console.log('Lisetening t port %{app.config.port}');
+        console.log(`Lisetening t port ${app.config.port}`);
     });
 };
 
 app.handleReqRes = (req, res) => {
     res.end('Hello World');
 };
+app.createServer()
