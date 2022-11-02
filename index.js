@@ -1,21 +1,31 @@
-const http = require('http');
+const http = require("http");
+const url = require("url");
 
 const app = {};
 
 // configuration
 
 app.config = {
-    port: 1998,
+  port: 2000,
 };
 
 app.createServer = () => {
-    const server = http.createServer(app.handleReqRes);
-    server.listen(app.config.port, () => {
-        console.log(`Lisetening t port ${app.config.port}`);
-    });
+  const server = http.createServer(app.handleServer);
+  // server host out
+  server.listen(app.config.port, () => {
+    console.log(`The server is runnig ${app.config.port}`);
+  });
 };
 
-app.handleReqRes = (req, res) => {
-    res.end('Hello World');
+app.handleServer = (req, res) => {
+  const parseUrl = url.parse(req.url, true);
+
+  const path =parseUrl.pathname
+
+  console.log(path);
+
+  res.end("I will be real programmers");
 };
-app.createServer()
+
+// server start
+app.createServer();
