@@ -22,7 +22,13 @@ app.handleServer = (req, res) => {
 
   const path =parseUrl.pathname
 
-  console.log(path);
+  const trimmedPath = path.replace(/^\/+|\/+$/g,'');
+
+  const method = req.method.toLowerCase()
+
+  const queryStringObj = parseUrl.query
+
+  console.log(queryStringObj);
 
   res.end("I will be real programmers");
 };
