@@ -1,5 +1,6 @@
 const http = require("http");
 const url = require("url");
+const {StringDecoder} = require('string_decoder')
 
 const app = {};
 
@@ -30,9 +31,23 @@ app.handleServer = (req, res) => {
 
   const headearObject = req.headers;
 
-  console.log(headearObject);
+  const decoder = new StringDecoder('utf-8')
+  let realData = ''
 
-  res.end("I will be real programmers");
+  req.on('data',(buffer)=>{
+    realData+= decoder.write(buffer)
+  })
+
+  req.on('end',()=>{
+    realData+= decoder.end()
+
+    console.log(realData)
+
+    res.end("I will be real programmers");
+  })
+
+
+
 };
 
 // server start
