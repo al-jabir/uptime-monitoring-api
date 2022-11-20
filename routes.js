@@ -1,7 +1,7 @@
-const { mafiaHandler } = require('./handlers/routeHandle/sampleHandler')
+const { mafiaHandler } = require("./handlers/routeHandle/sampleHandler");
 
 const routes = {
-    'mafia': mafiaHandler
-}
+  mafia: mafiaHandler,
+};
 
-module.exports = routes
+module.exports = routes;

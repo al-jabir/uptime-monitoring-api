@@ -25,31 +25,27 @@ handler.handleReqRes = (req, res) => {
 
   const decoder = new StringDecoder("utf-8");
   let strData = "";
-
   const chosenHandler = routes[trimmedPath]
     ? routes[trimmedPath]
     : notFoundHandler;
 
-  chosenHandler(reqeustProperties, (statusCode, payload) => {
-    statusCode = typeof statusCode === "number" ? statusCode : 500;
-    payload = typeof payload === "object" ? payload : {};
-
-    const payloadString = JSON.stringify(payload);
-
-    res.writeHead(statusCode);
-    res.end(payloadString);
-  });
-
   req.on("data", (buffer) => {
-    strData += decoder.write(buffer);
+    realData += decoder.write(buffer);
   });
 
   req.on("end", () => {
-    strData += decoder.end();
+    realData += decoder.end();
 
-    console.log(strData);
+    chosenHandler(requestProperties, (statusCode, payload) => {
+      statusCode = typeof statusCode === "number" ? statusCode : 500;
+      payload = typeof payload === "object" ? payload : {};
 
-    res.end("Hello, I will be Junior Software Developer");
+      const payloadString = JSON.stringify(payload);
+
+      // return the final response
+      res.writeHead(statusCode);
+      res.end(payloadString);
+    });
   });
 };
 

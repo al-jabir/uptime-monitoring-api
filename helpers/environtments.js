@@ -1,8 +1,9 @@
+// module scaffolding
 const environments = {};
 
 // staging environment
 environments.staging = {
-  port: 1998,
+  port: 3000,
   envName: "staging",
 };
 
