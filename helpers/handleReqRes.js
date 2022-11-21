@@ -30,13 +30,13 @@ handler.handleReqRes = (req, res) => {
     : notFoundHandler;
 
   req.on("data", (buffer) => {
-    realData += decoder.write(buffer);
+    strData += decoder.write(buffer);
   });
 
   req.on("end", () => {
-    realData += decoder.end();
+    strData += decoder.end();
 
-    chosenHandler(requestProperties, (statusCode, payload) => {
+    chosenHandler(reqeustProperties, (statusCode, payload) => {
       statusCode = typeof statusCode === "number" ? statusCode : 500;
       payload = typeof payload === "object" ? payload : {};
 
