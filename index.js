@@ -8,19 +8,19 @@ const app = {};
 // data.create(
 //   "test",
 //   "newFile",
-//   { name: "Bangladesh", language: "Bangla" },
+//   { name: "England", language: "English" },
 //   (err) => {
 //     console.log(`error was`, err);
 //   }
 // );
 
-// data.read("mafia", "newMafia", (err, result) => {
-//   console.log(err, result);
-// });
-
-data.read("king", "newKing", { country: "England" }, (err) => {
-  console.log(err);
+data.read("mafia", "newMafia", (err, data) => {
+  console.log(err, data);
 });
+
+// data.read("king", "newKing", { country: "England" }, (err) => {
+//   console.log(err);
+// });
 
 app.createServer = () => {
   const server = http.createServer(app.handlerServer);
