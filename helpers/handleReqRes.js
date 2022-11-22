@@ -1,51 +1,56 @@
+// dependencies
+const routes = require("../routes/routes");
 const url = require("url");
 const { StringDecoder } = require("string_decoder");
-
 const { notFoundHandler } = require("../handlers/routeHandle/notFoundHandler");
-const routes = require("../routes/routes");
 const { parseJSON } = require("./utilities");
 
+// modue scaffolding
 const handler = {};
 
 handler.handleReqRes = (req, res) => {
-  const parseUrl = url.parse(req.url, true);
-  const path = parseUrl.pathname;
+  // request handling
+  // get the url and parse it
+  const parsedUrl = url.parse(req.url, true);
+  const path = parsedUrl.pathname;
   const trimmedPath = path.replace(/^\/+|\/+$/g, "");
-  const queryStringObj = parseUrl.query;
   const method = req.method.toLowerCase();
-  const headerObj = req.headers;
+  const queryStringObject = parsedUrl.query;
+  const headersObject = req.headers;
 
-  const reqeustProperties = {
-    parseUrl,
+  const requestProperties = {
+    parsedUrl,
     path,
     trimmedPath,
-    queryStringObj,
     method,
-    headerObj,
+    queryStringObject,
+    headersObject,
   };
 
   const decoder = new StringDecoder("utf-8");
-  let strData = "";
+  let realData = "";
+
   const chosenHandler = routes[trimmedPath]
     ? routes[trimmedPath]
     : notFoundHandler;
 
   req.on("data", (buffer) => {
-    strData += decoder.write(buffer);
+    realData += decoder.write(buffer);
   });
 
   req.on("end", () => {
-    strData += decoder.end();
+    realData += decoder.end();
 
-    reqeustProperties.body = parseJSON(strData);
+    requestProperties.body = parseJSON(realData);
 
-    chosenHandler(reqeustProperties, (statusCode, payload) => {
+    chosenHandler(requestProperties, (statusCode, payload) => {
       statusCode = typeof statusCode === "number" ? statusCode : 500;
       payload = typeof payload === "object" ? payload : {};
 
       const payloadString = JSON.stringify(payload);
 
       // return the final response
+      res.setHeader("Content-Type", "application/json");
       res.writeHead(statusCode);
       res.end(payloadString);
     });

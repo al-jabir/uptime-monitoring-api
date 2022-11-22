@@ -1,26 +1,8 @@
 const http = require("http");
 const { handleReqRes } = require("./helpers/handleReqRes");
 const environment = require("./helpers/environtments");
-const data = require("./lib/data");
 
 const app = {};
-
-// data.create(
-//   "test",
-//   "newFile",
-//   { name: "England", language: "English" },
-//   (err) => {
-//     console.log(`error was`, err);
-//   }
-// );
-
-data.read("mafia", "newMafia", (err, data) => {
-  console.log(err, data);
-});
-
-// data.read("king", "newKing", { country: "England" }, (err) => {
-//   console.log(err);
-// });
 
 app.createServer = () => {
   const server = http.createServer(app.handlerServer);

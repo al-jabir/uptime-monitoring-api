@@ -1,9 +1,9 @@
 // dependencies
-
 const data = require("../../lib/data");
 const { hash } = require("../../helpers/utilities");
 const { parseJSON } = require("../../helpers/utilities");
 
+// module scaffolding
 const handler = {};
 
 handler.userHandler = (requestProperties, callback) => {
@@ -13,7 +13,6 @@ handler.userHandler = (requestProperties, callback) => {
   } else {
     callback(405);
   }
-  // callback(200, { message: "This is user url" });
 };
 
 handler._users = {};
@@ -49,10 +48,8 @@ handler._users.post = (requestProperties, callback) => {
       ? requestProperties.body.tosAgreement
       : false;
 
-  // check condition
-
-  if (firstName && lastName && password && tosAgreement) {
-    // make sure that the user dosen't already exits
+  if (firstName && lastName && phone && password && tosAgreement) {
+    // make sure that the user doesn't already exists
     data.read("users", phone, (err1) => {
       if (err1) {
         const userObject = {
@@ -63,16 +60,13 @@ handler._users.post = (requestProperties, callback) => {
           tosAgreement,
         };
         // store the user to db
-
         data.create("users", phone, userObject, (err2) => {
           if (!err2) {
             callback(200, {
               message: "User was created successfully!",
             });
           } else {
-            callback(500, {
-              error: "Could not create user!",
-            });
+            callback(500, { error: "Could not create user!" });
           }
         });
       } else {
@@ -88,7 +82,9 @@ handler._users.post = (requestProperties, callback) => {
   }
 };
 
+// @TODO: Authentication
 handler._users.get = (requestProperties, callback) => {
+  // check the phone number if valid
   const phone =
     typeof requestProperties.queryStringObject.phone === "string" &&
     requestProperties.queryStringObject.phone.trim().length === 11
@@ -114,6 +110,7 @@ handler._users.get = (requestProperties, callback) => {
   }
 };
 
+// @TODO: Authentication
 handler._users.put = (requestProperties, callback) => {
   // check the phone number if valid
   const phone =
@@ -187,6 +184,7 @@ handler._users.put = (requestProperties, callback) => {
   }
 };
 
+// @TODO: Authentication
 handler._users.delete = (requestProperties, callback) => {
   // check the phone number if valid
   const phone =
